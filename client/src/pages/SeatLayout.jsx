@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 // import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
 import Loading from '../components/Loading'
 import { ArrowRightIcon, ClockIcon } from 'lucide-react'
@@ -84,7 +84,7 @@ const SeatLayout = () => {
             if (!selectedTime || !selectedSeats.length) return toast.error("Please select a time and seat")
             const { data } = await axios.post("/api/booking/create", { showId: selectedTime.showId, selectedSeats }, { headers: { Authorization: `Bearer ${await getToken()}` } })
             if (data.success) {
-                window.location.href=data.url;
+                window.location.href = data.url
             } else {
                 toast.error(data.message)
             }

@@ -2,6 +2,7 @@
 
 //function to check availability of selectrd seats for a movie
 
+import { inngest } from "../inngest/index.js";
 import Booking from "../models/Booking.js";
 import showModel from "../models/Show.js";
 import stripe from "stripe"
@@ -41,7 +42,7 @@ export const createBooking = async (req,res) => {
 
         //Get the show Details
         const showData = await showModel.findById(showId).populate("movie");
-        console.log(showData)
+        
         //creat a new booking
         const booking = await Booking.create({
             user: userId,
@@ -83,6 +84,13 @@ export const createBooking = async (req,res) => {
         })
         booking.paymentLink=session.url
         await booking.save()
+        //Run inngest sheduler fun to check payment status after 10 min
+        await inngest.send({
+            name:"app/checkpayment",
+            date:{
+                bookingId:booking._id.toString()
+            }
+        })
         res.json({success:true,url:session.url})
 
 
