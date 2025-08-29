@@ -26,6 +26,7 @@ export const addShow = async (req, res) => {
         const { movieId, showsInput, showPrice } = req.body
 
         let movie = await Movie.findById(movieId)
+        console.log(movie)
 
         if (!movie) {
             //Fetch movie details
