@@ -58,9 +58,9 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
     { event: "app/checkpayment" },
     async ({ event, step }) => {
         const tenMinutesLater = new Date(Date.now() + 10 * 60 * 1000);
-        await step.sleepUntil("wait- for -10 -minutes", tenMinutesLater)
+        await step.sleepUntil("wait-for-10-minutes", tenMinutesLater)
 
-        await stop.run("check-payment-status", async () => {
+        await step.run("check-payment-status", async () => {
             const bookingId = event.data.bookingId
             const booking = await Booking.findById(bookingId)
             //if payment is not made,release seats and delete booking
@@ -80,8 +80,8 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
 )
 //Inngest fun to send email when user books a show
 const sendBookingConfirmationEmail = inngest.createFunction(
-    { id: "send-booking-confirmation-enail" },
-    { event: "app/show.bppked" },
+    { id: "send-booking-confirmation-email" },
+    { event: "app/show.booked" },
     async ({ event, step }) => {
         const { bookingId } = event.data;
 
@@ -118,4 +118,4 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 
 
 // Create an empty array where we'll export future Inngest functions
-export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, releaseSeatsAndDeleteBooking,sendBookingConfirmationEmail];
+export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, releaseSeatsAndDeleteBooking, sendBookingConfirmationEmail];
